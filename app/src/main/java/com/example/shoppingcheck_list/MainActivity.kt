@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         val addButton:Button = findViewById(R.id.add)
 
         addButton.setOnClickListener{
-            val intent = Intent(this@MainActivity, ProductAddActivity::class.java)
+            val intent = Intent(this@MainActivity, ProductRecognizeActivity::class.java)
             startActivityForResult(intent, 0)
         }
     }
