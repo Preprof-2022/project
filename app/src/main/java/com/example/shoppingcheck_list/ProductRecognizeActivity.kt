@@ -109,4 +109,5 @@ class ProductRecognizeActivity : AppCompatActivity() {
         Toast.makeText(this, confidences[maxPos].toString(), Toast.LENGTH_LONG);
         model.close()
     }
+
 }
