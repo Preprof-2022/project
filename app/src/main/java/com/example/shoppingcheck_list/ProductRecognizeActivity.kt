@@ -84,9 +84,9 @@ class ProductRecognizeActivity : AppCompatActivity() {
         for (i in 0 until imageSize) {
             for (j in 0 until imageSize) {
                 val value = intValues[pixel++]
-                byteBuffer.putFloat((value shr 16 and 0xFF) * (1f / 224f))
-                byteBuffer.putFloat((value shr 8 and 0xFF) * (1f / 224f))
-                byteBuffer.putFloat((value and 0xFF) * (1f / 224f))
+//                byteBuffer.putFloat((value shr 16 and 0xFF) * (1f / 51f))
+//                byteBuffer.putFloat((value shr 8 and 0xFF) * (1f / 51f))
+                byteBuffer.putFloat((value and 0xFF) * (1f / 51f))
             }
         }
 
@@ -106,7 +106,8 @@ class ProductRecognizeActivity : AppCompatActivity() {
             }
         }
 
-        Toast.makeText(this, confidences[maxPos].toString(), Toast.LENGTH_LONG);
+        Toast.makeText(this, maxPos.toString(), Toast.LENGTH_LONG).show();
+
         model.close()
     }
 
