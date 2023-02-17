@@ -92,10 +92,16 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = RecyclerAdapter(items)
 
         val addButton:Button = findViewById(R.id.add)
+        val scanButton : Button = findViewById(R.id.scan)
 
         addButton.setOnClickListener{
-            val intent = Intent(this@MainActivity, ProductRecognizeActivity::class.java)
+            val intent = Intent(this@MainActivity, ProductAddActivity::class.java)
             startActivityForResult(intent, 0)
+        }
+
+        scanButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, ProductRecognizeActivity::class.java)
+            startActivityForResult(intent, 2)
         }
     }
 
