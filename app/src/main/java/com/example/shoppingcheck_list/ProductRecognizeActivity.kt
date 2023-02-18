@@ -1,5 +1,6 @@
 package com.example.shoppingcheck_list
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
@@ -37,15 +38,19 @@ class ProductRecognizeActivity : AppCompatActivity() {
         button = binding.photoButton
         resText = binding.resultText
 
-        button.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                takePicturePreview.launch(null)
-            } else {
-                requestedPermission.launch(android.Manifest.permission.CAMERA)
-            }
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            takePicturePreview.launch(null)
+        } else {
+            requestedPermission.launch(android.Manifest.permission.CAMERA)
         }
+
+        /*
+        button.setOnClickListener {
+
+        }
+         */
 
     }
 
@@ -106,9 +111,21 @@ class ProductRecognizeActivity : AppCompatActivity() {
             }
         }
 
-        Toast.makeText(this, maxPos.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, maxPos.toString(), Toast.LENGTH_LONG).show()
 
         model.close()
+    }
+
+    /**
+     * Returns the result to main activity
+     * @param productName Scan result
+     */
+
+    private fun returnToMain(productName : String){
+        val intent = Intent()
+        intent.putExtra("productName", productName)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
 }
