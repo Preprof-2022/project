@@ -19,6 +19,10 @@ class ProductEditActivity : AppCompatActivity() {
 
         textField.setText(intent.extras?.getString("item name"))
 
+        /**
+         * This block of code sends to MainActivity the new name and position of the object which user wants to edit
+         */
+
         buttonSave.setOnClickListener {
             val intent = Intent()
             intent.putExtra("action", "rename")
@@ -28,6 +32,10 @@ class ProductEditActivity : AppCompatActivity() {
             println(textField.text)
             finish()
         }
+
+        /**
+         * This block of code sends to MainActivity the position of the object which user wants to delete
+         */
 
         buttonDelete.setOnClickListener {
             val intent = Intent()
