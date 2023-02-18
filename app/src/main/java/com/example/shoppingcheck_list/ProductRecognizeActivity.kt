@@ -38,7 +38,6 @@ class ProductRecognizeActivity : AppCompatActivity() {
         button = binding.photoButton
         resText = binding.resultText
         imageView = binding.preview
-
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED
         ) {
