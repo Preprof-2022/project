@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 /**
  * The  data class for storing
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 data class Item(val constructorName : String){
     var name = constructorName
+    var shortenedName = name.replace(" ", "").lowercase(Locale.getDefault())
 }
 
 
@@ -106,8 +109,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Changes the list of products (adds an element if the request code is 0 and edits/removes an existing element if the request code is 1)
-     * @param requestCode request code which specifies what to do with the list 0 for adding an item to the list, 1 for editing/removing one
+     * Changes the list of products depending on the request code
+     * @param requestCode request code which specifies what to do with the list - 0 for adding an item to the list, 1 for editing/removing one, 2 for deleting after scanning
      * @param resultCode shows if the activity worked properly
      * @param data an Intent with data returned from activity
      */
@@ -120,17 +123,38 @@ class MainActivity : AppCompatActivity() {
                 recyclerView.adapter?.notifyDataSetChanged()
             }
         }
-        else {
+        else if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 val action = data?.getStringExtra("action")
                 val position = data?.getIntExtra("position", 0)
                 if (action == "rename"){
                     items[position!!].name = data?.getStringExtra("name").toString()
+                    items[position!!].shortenedName = items[position!!].name.replace(" ", "").lowercase()
                 }
                 else if (action == "delete"){
                     items.removeAt(position!!)
                 }
                 recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
+        else{
+            if (resultCode == RESULT_OK){
+                val productName = data?.getStringExtra("productName")
+                var removed = false
+                for (i in items.indices){
+                    if (items[i].shortenedName == productName){
+                        items.removeAt(i)
+                        Toast.makeText(this, "Успешно удалён продукт \"${productName}\"", Toast.LENGTH_LONG).show()
+                        removed = true
+                        break
+                    }
+                }
+                if (!removed){
+                    Toast.makeText(this, "Сканируемый продукт не найден в списке", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
             }
         }
     }
