@@ -36,6 +36,7 @@ class ProductRecognizeActivity : AppCompatActivity() {
 
         button = binding.photoButton
         resText = binding.resultText
+        imageView = binding.preview
 
         button.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
@@ -48,7 +49,9 @@ class ProductRecognizeActivity : AppCompatActivity() {
         }
 
     }
-
+    /**
+     * The function which check camera permission and start taking photo function
+     */
     private val requestedPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
@@ -56,6 +59,9 @@ class ProductRecognizeActivity : AppCompatActivity() {
             }
         }
 
+    /**
+     * The function which take photo and start recognition
+     */
     private val takePicturePreview =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
@@ -64,15 +70,19 @@ class ProductRecognizeActivity : AppCompatActivity() {
                 var bitmapFin = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension)
 
                 bitmapFin = Bitmap.createScaledBitmap(bitmapFin, imageSize, imageSize, false)
-
+                imageView.setImageBitmap(bitmapFin)
                 outputGenerator(bitmapFin)
             }
         }
 
+    /**
+     * The function which recognise the letter
+     * @param bitmap the bitmap of picture
+     */
     private fun outputGenerator(bitmap: Bitmap) {
         val model = Model.newInstance(this)
 
-// Creates inputs for reference.
+
         val inputFeature0 =
             TensorBuffer.createFixedSize(intArrayOf(1, 50, 50), DataType.FLOAT32)
         val byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize)
@@ -84,8 +94,6 @@ class ProductRecognizeActivity : AppCompatActivity() {
         for (i in 0 until imageSize) {
             for (j in 0 until imageSize) {
                 val value = intValues[pixel++]
-//                byteBuffer.putFloat((value shr 16 and 0xFF) * (1f / 51f))
-//                byteBuffer.putFloat((value shr 8 and 0xFF) * (1f / 51f))
                 byteBuffer.putFloat((value and 0xFF) * (1f / 51f))
             }
         }
