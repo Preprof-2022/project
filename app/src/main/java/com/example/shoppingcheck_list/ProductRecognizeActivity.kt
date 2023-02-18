@@ -43,6 +43,7 @@ class ProductRecognizeActivity : AppCompatActivity() {
             == PackageManager.PERMISSION_GRANTED
         ) {
             takePicturePreview.launch(null)
+
         } else {
             requestedPermission.launch(android.Manifest.permission.CAMERA)
         }
